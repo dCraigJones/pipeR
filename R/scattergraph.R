@@ -58,18 +58,9 @@ draw_lc <- function(v_fps, y_in) {
     v <- v_fps
     s <- 1 # arbitrary value
   
-    xx <- suppressWarnings(calc_hyd_radius(y, d))
-    yy <- v
+    HC <- fit_HC(v,y,d)
     
-    fit <- lm(yy~xx)
-    b <- coef(fit)[2]
-    
-    C <- b/1.486
-    
-    n <- sqrt(s)/C
-    
-    HC <- sqrt(s)/n
-    names(HC) <- "Hyd C"
+    n <- sqrt(s)/HC
     
     retVal <- HC
     
@@ -86,8 +77,26 @@ draw_lc <- function(v_fps, y_in) {
     return(retVal)
   }
   
-draw_ss <- function(v_fps, y_in, dd_in) {
+draw_ss <- function(v_fps, y_in) {
+  d <- scattergraph_properties$D_in
   
+  ddog_in <- fit_ddog(v_fps, y_in, d)
+  hc_fit <- fit_ddog_HC(v_fps, y_in, d, ddog_in)
+  
+  y <- seq(0,d,length.out=100)
+  
+  r_e <- suppressWarnings(calc_hyd_radius_surcharged(y,d,ddog_in))
+  
+  HC <- hc_fit
+  
+  v_fps <- 1.486*HC*(r_e)^(2/3)
+  
+  lines(v_fps, y, lty=2)
+  
+  retVal <- ddog_in
+  names(retVal) <- "Surcharge Depth (IN)"
+  
+  return(retVal)
   
 }
 
