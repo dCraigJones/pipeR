@@ -35,6 +35,8 @@ scattergraph <- function(D_in=8, max.d_in=D_in*2, max.v_fps=5, step.d_in=2, step
 }
 
 draw_dm <- function(s, n=0.013) {
+    scattergraph_properties$s <<- s
+  
     d <- scattergraph_properties$D_in
     
     y <- seq(0,d,length.out=100)
@@ -51,10 +53,39 @@ draw_dm <- function(s, n=0.013) {
 }
 
 draw_lc <- function(v_fps, y_in) {
+    d <- scattergraph_properties$D_in
+    y <- y_in
+    v <- v_fps
+    s <- 1 # arbitrary value
   
-  
-}
+    xx <- suppressWarnings(calc_hyd_radius(y, d, s))
+    yy <- v
+    
+    fit <- lm(yy~xx)
+    b <- coef(fit)[2]
+    
+    C <- b/1.486
+    
+    n <- sqrt(s)/C
+    
+    HC <- sqrt(s)/n
+    names(HC) <- "Hyd C"
+    
+    retVal <- HC
+    
+    if(!is.null(scattergraph_properties$s)) {
 
+      n_fit <- sqrt(scattergraph_properties$s)/HC
+      names(n_fit) <- "Fitted Manning Roughness"
+      
+      retVal <- n_fit
+    }
+  
+    draw_dm(s, n)
+    
+    return(retVal)
+  }
+  
 draw_ss <- function(v_fps, y_in, dd_in) {
   
   
