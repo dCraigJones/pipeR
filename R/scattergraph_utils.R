@@ -33,7 +33,7 @@ draw_pipe_xsection <- function(D, max.v_fps) {
   
 }
 
-calc_hyd_radius <- function(y,d,s) {
+calc_hyd_radius <- function(y,d) {
   theta <- 2*acos(1-2*y/d)
   area <- d^2/8*(theta-sin(theta))
   perimeter <- 0.5*theta*d

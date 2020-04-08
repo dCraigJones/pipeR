@@ -58,7 +58,7 @@ draw_lc <- function(v_fps, y_in) {
     v <- v_fps
     s <- 1 # arbitrary value
   
-    xx <- suppressWarnings(calc_hyd_radius(y, d, s))
+    xx <- suppressWarnings(calc_hyd_radius(y, d))
     yy <- v
     
     fit <- lm(yy~xx)
