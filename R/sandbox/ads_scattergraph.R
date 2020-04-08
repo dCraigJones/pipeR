@@ -234,7 +234,6 @@ draw_isolines(8, 400)
   
   
   
-  
   min.rmse <- min(curve[,2], na.rm=TRUE)
   index <- which(min.rmse==curve[,2])
   depth <- seq(0,8,length.out=50)[index]
