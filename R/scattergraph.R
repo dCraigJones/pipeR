@@ -91,6 +91,26 @@ draw_ss <- function(v_fps, y_in, dd_in) {
   
 }
 
-draw_iso <- function(q_gpm) {
+draw_iso <- function(q_gpm, color="#40AE49") {
+    d <- scattergraph_properties$D_in
+    max.d <- scattergraph_properties$max.d_in
+    max.v <- scattergraph_properties$max.v_fps
   
-}
+    y <- seq(0,max.d,length.out=1000)
+    
+    area <- rep(3.1416*d^2/4, length(y))
+    
+    for (i in 1:length(y)) {
+      if (y[i]<=d) {
+        theta <- 2*acos(1-2*y[i]/d)
+        area[i] <- d^2/8*(theta-sin(theta))
+      }
+    }
+    
+    q_gpm <- 200
+    v_fps <- (q_gpm/448.8)/(area/144)
+    
+    v_fps[v_fps>max.v]=NA
+    
+    lines(v_fps, y, col=color, lty=3)
+  }
