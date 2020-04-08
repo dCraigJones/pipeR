@@ -35,8 +35,19 @@ scattergraph <- function(D_in=8, max.d_in=D_in*2, max.v_fps=5, step.d_in=2, step
 }
 
 draw_dm <- function(s, n=0.013) {
-  
-  
+    d <- scattergraph_properties$D_in
+    
+    y <- seq(0,d,length.out=100)
+    
+    theta <- 2*acos(1-2*y/d)
+    area <- d^2/8*(theta-sin(theta))
+    perimeter <- 0.5*theta*d
+    r <- area/perimeter
+    
+    q_gpm <- 448.8*1.49/n*(area/12^2)*(r/12)^(2/3)*sqrt(s)
+    v_fps <- (q_gpm/448.8)/(area/144)
+    
+    lines(v_fps, y, lty=2)
 }
 
 draw_lc <- function(v_fps, y_in) {
